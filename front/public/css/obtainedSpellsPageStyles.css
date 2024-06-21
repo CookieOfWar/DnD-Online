@@ -1,0 +1,535 @@
+@font-face {
+  font-family: "Cattedrale";
+  src: url("../fonts/Cattedrale.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mainSpellsDiv {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45vw;
+  height: 49vw;
+}
+
+#spellsCenter {
+  width: 97%;
+  height: 97%;
+
+  padding: 0 1vw 0 1vw;
+
+  background-image: url("../img/pergament.jpg");
+  background-size: 100% 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#leftSpells,
+#centerSpells,
+#rightSpells {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background-size: 100% 100%;
+
+  width: 32%;
+  height: 97%;
+}
+
+#leftSpells {
+  background-image: url("../img/threeLevelsFrame.png");
+}
+
+#centerSpells {
+  background-image: url("../img/threeLevelsFrameCenter.png");
+}
+
+#rightSpells {
+  background-image: url("../img/fourLevelsFrame.png");
+}
+
+.spellLevel {
+  background: linear-gradient(to bottom, #cfc09f 27%, #ffecb3 40%, #b37f18 78%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.2vw;
+  font-family: Cattedrale;
+  position: absolute;
+}
+#sl0,
+#sl1,
+#sl2 {
+  margin-left: 2.5%;
+}
+#sl1 {
+  margin-left: 3%;
+}
+#sl3,
+#sl4,
+#sl5 {
+  margin-left: 2.5%;
+}
+#sl6,
+#sl7,
+#sl8,
+#sl9 {
+  margin-left: 2.5%;
+}
+
+#sl0,
+#sl3,
+#SQT3 {
+  margin-top: 1.4%;
+}
+#sl6,
+#SQT6 {
+  margin-top: 1.2%;
+}
+#sl1,
+#sl4,
+#sl7,
+#SQT1,
+#SQT4,
+#SQT7 {
+  margin-top: 33.8%;
+}
+#sl2,
+#sl5,
+#SQT2,
+#SQT5 {
+  margin-top: 67.2%;
+}
+#sl8,
+#SQT8 {
+  margin-top: 60.3%;
+}
+#sl9,
+#SQT9 {
+  margin-top: 84.2%;
+}
+
+#spellsLevel0,
+#spellsLevel1,
+#spellsLevel2,
+#spellsLevel3,
+#spellsLevel4,
+#spellsLevel5,
+#spellsLevel6,
+#spellsLevel7,
+#spellsLevel8,
+#spellsLevel9 {
+  position: absolute;
+  margin-left: 2%;
+  height: 24%;
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(165, 148, 0) transparent;
+}
+
+.spellsQuantityTrackingDiv {
+  width: 10vw;
+  height: 1.5vw;
+  font-size: 1vw;
+  margin: 0;
+  padding: 0;
+  padding-top: 0.2%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  position: absolute;
+  margin-left: 2%;
+  /* height: 24%; */
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(165, 148, 0) transparent;
+}
+.spellsQuantityTrackingDiv input {
+  margin: 0;
+  /* margin-left: 5%; */
+  padding: 0;
+  font-size: 1vw;
+  background-color: transparent;
+  color: yellow;
+  border: 0;
+  width: 2.1vw;
+  text-align: center;
+}
+.spellsQuantityTrackingDiv span {
+  font-size: 0.8vw;
+  color: rgb(255, 247, 139);
+}
+.spellsQuantityTrackingDiv div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.spellsQuantityTrackingDiv input::-webkit-outer-spin-button,
+.spellsQuantityTrackingDiv input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.spellsQuantityTrackingDiv input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+#SQT1,
+#SQT2,
+#SQT3,
+#SQT4,
+#SQT5,
+#SQT6,
+#SQT7,
+#SQT8,
+#SQT9 {
+  margin-left: 6.5%;
+}
+
+#spellsLevel0,
+#spellsLevel3,
+#spellsLevel6 {
+  margin-top: 7%;
+}
+#spellsLevel1,
+#spellsLevel4,
+#spellsLevel7 {
+  margin-top: 39.8%;
+}
+#spellsLevel2,
+#spellsLevel5 {
+  margin-top: 72.8%;
+}
+#spellsLevel7 {
+  height: 14%;
+}
+
+#spellsLevel8 {
+  height: 16%;
+  margin-top: 65.7%;
+}
+
+#spellsLevel9 {
+  height: 10%;
+  margin-top: 89.3%;
+}
+
+.spellsLevelDivs {
+  width: 26.7%;
+}
+
+.obtainedSpell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.addObtainedSpellButton {
+  width: 100%;
+  padding: 0;
+  font-weight: bold;
+
+  font-size: 0.8vw;
+  height: 1vw;
+
+  background-image: url(../img/pergament.jpg);
+  background-size: 300% 300%;
+  filter: hue-rotate(0deg) saturate(1.7) brightness(1);
+}
+.spellsLevelDivs button > * {
+  margin: 0;
+}
+
+.spellsLevelDivs ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.spellsLevelDivs li > div {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0.2vw;
+}
+.linkSpellButton {
+  width: 1vw;
+  height: 1.1vw;
+  border: 0;
+  background-color: transparent;
+  background-image: url(../img/book.png);
+  background-size: 100% 100%;
+}
+.removeSpellButton {
+  width: 0.7vw;
+  height: 1.1vw;
+  cursor: pointer;
+  border: 0;
+  text-align: center;
+  background-color: rgb(228, 0, 0);
+  font-size: 0.8vw;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.addCustomSpellButton {
+  width: 1vw;
+  height: 1.1vw;
+  border: 0;
+  background-color: transparent;
+  background-image: url(../img/bookPlus.png);
+  background-size: 100% 100%;
+}
+
+.spellsLevelDivs input {
+  width: 85%;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8vw;
+  border: 0;
+  border-bottom: 1px solid black;
+  color: black;
+  background-color: transparent;
+}
+
+#spellsOfCurrentLevelDiv {
+  position: absolute;
+  display: none;
+  width: 40vw;
+  height: 30vw;
+  background-image: url(../img/pergament.jpg);
+  background-size: 100% 100%;
+}
+#spellsOfCurrentLevelUl {
+  height: 85%;
+  margin: 0;
+
+  list-style-type: none;
+  columns: 2;
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(211, 190, 0) transparent;
+}
+#spellsOfCurrentLevelCloseButton {
+  font-size: 1.5vw;
+  position: relative;
+  background-color: transparent;
+  border: 0;
+  left: 95.5%;
+  margin: 0;
+  padding: 0;
+}
+
+/*Custom spells*/
+
+#customSpellsCreator {
+  position: absolute;
+  margin-left: 77vw;
+  margin-top: 1vw;
+  width: 30vw;
+  height: 34.9vw;
+  /* background-color: white; */
+
+  background-image: url(../img/pergament.jpg);
+  background-size: 100% 100%;
+  filter: saturate(1.4);
+}
+
+#customSpellName {
+  margin-bottom: 1vw;
+  font-size: 1.5vw;
+}
+
+#customSpellDamageDiv div,
+#customSpellDurationDiv,
+#customSpellRangeDiv,
+#customSpellTimeDiv,
+#customSpellLevelSelectDiv {
+  font-size: 1vw;
+  margin-bottom: 1vw;
+}
+#customSpellDamageSelect {
+  font-size: 1vw;
+}
+
+#customSpellDamageDiv ul {
+  list-style-type: none;
+  width: 30vw;
+  columns: 4;
+  margin: 0;
+  padding: 0;
+  padding-left: 0.8vw;
+}
+#customSpellDamageDiv ul input {
+  width: 2.3vw;
+  text-align: center;
+  font-size: 1vw;
+}
+#customSpellDamageDiv ul li {
+  width: 5vw;
+  display: flex;
+  margin-bottom: 0.3vw;
+}
+#customSpellDamageDiv ul li span {
+  width: 2vw;
+  font-size: 1vw;
+}
+
+#customSpellDescription {
+  border: 0;
+  outline: 0;
+
+  background-color: rgba(255, 255, 255, 0.288);
+  scrollbar-width: thin;
+  scrollbar-color: rgb(165, 148, 0) transparent;
+}
+
+#customSpellDuration,
+#customSpellRange,
+#customSpellTime,
+#customSpellLevelSelect {
+  width: 20vw;
+  font-size: 0.8vw;
+}
+#customSpellRange {
+  width: 21.8vw;
+}
+#customSpellTime {
+  width: 16.3vw;
+}
+#customSpellLevelSelect {
+  width: 3vw;
+}
+
+#customSpellButtonsDiv {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+#confirmCustomSpellButton {
+  width: 80%;
+  font-size: 1vw;
+  background-color: rgba(2, 155, 2, 0.815);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#cancelCustomSpellButton {
+  width: 20%;
+  font-size: 1vw;
+  background-color: rgba(199, 4, 4, 0.815);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#mainEquipmentPage {
+  display: flex;
+  flex-direction: column;
+
+  background-image: url("../img/pergament.jpg");
+  background-size: 100% 100%;
+}
+#centerEquipmentDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+#textareasDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 44vw;
+  height: 40vw;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  margin-top: 0.5vw;
+
+  /* background-image: url("../img/equipmentBackground.png"); */
+  /* background-size: 100% 100%; */
+}
+#leftEquipmentDiv,
+#rightEquipmentDiv {
+  background-color: transparent;
+  background-image: url("../img/equipmentBackground.png");
+  background-size: 100% 100%;
+  width: 22vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#leftEquipmentText,
+#rightEquipmentText {
+  font-size: 1vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(211, 190, 0) transparent;
+  width: 18vw;
+  height: 38vw;
+  background-color: transparent;
+}
+
+#bottomEquipmentDiv {
+  background-image: url("../img/moneyBackground.png");
+  background-size: 100% 100%;
+  width: 22vw;
+  height: 5vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* font-size: 2vw; */
+
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  padding-right: 0.5vw;
+}
+#bottomEquipmentDiv div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.7vw;
+}
+#bottomEquipmentDiv div span {
+  font-size: 0.6vw;
+  color: yellow;
+}
+#bottomEquipmentDiv input {
+  width: 2.5vw;
+  font-size: 1.5vw;
+  background-color: transparent;
+  text-align: center;
+  border: 0;
+}

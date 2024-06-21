@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      let socket = io();
+    </script>
+  </head>
+  <body>
+    <h2>Game code</h2>
+    <input type="text" id="codeInput" autocomplete="off" />
+    <button id="createGame">Create game</button>
+    <button id="joinGame">Join game</button>
+    <div style="color: red" id="errorMessage"></div>
+
+    <script>
+      document
+        .querySelector("#createGame")
+        .addEventListener("click", function () {
+          window.location.replace(
+            "/master?code=" + document.querySelector("#codeInput").value
+          );
+        });
+      document
+        .querySelector("#joinGame")
+        .addEventListener("click", function () {
+          window.location.replace(
+            "/player?code=" + document.querySelector("#codeInput").value
+          );
+        });
+
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("error") == "invalidCode") {
+        document.querySelector("#errorMessage").innerText =
+          "Invalid invite code";
+      }
+    </script>
+  </body>
+</html>

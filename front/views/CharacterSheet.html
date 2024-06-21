@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../public/css/Sheet.css" />
+    <link rel="stylesheet" href="../public/css/tips.css" />
+    <link rel="stylesheet" href="../public/css/obtainedSpellsPageStyles.css" />
+
+    <title>DnD-Helper</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      let socket = io();
+    </script>
+  </head>
+  <body>
+    <div
+      id="loadingDiv"
+      style="
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        z-index: 10000;
+      "
+    >
+      <img
+        src="../public/img/loading.gif"
+        alt="Загрузка"
+        style="width: 3vw; height: 3vw"
+      />
+    </div>
+
+    <div id="center">
+      <div id="leftData">
+        <div id="generalInfo">
+          <select name="Class" id="characterClass"></select>
+          <input
+            type="text"
+            id="characterName"
+            autocomplete="off"
+            placeholder='"Достойное" имя героя'
+          />
+          <select name="Race" id="characterRace"></select>
+          <button id="sexChanger">М</button>
+        </div>
+
+        <div id="bottomLeftData">
+          <div id="skillsBackground">
+            <h1>Навыки</h1>
+            <div id="skills">
+              <div id="strSkills">
+                <h2>____сил____</h2>
+                <div id="STstr" class="skill">
+                  <input
+                    type="checkbox"
+                    name="STstr"
+                    id="STstrCB"
+                    class="skillCB"
+                  />
+                  <label for="STstrCB"></label>
+                  <span class="skillName">Спасбросок</span>
+                  <p id="STstrVal" class="skillVals">+1</p>
+                </div>
+                <div id="athletics" class="skill">
+                  <input
+                    type="checkbox"
+                    name="athletics"
+                    id="athleticsCB"
+                    class="skillCB"
+                  />
+                  <label for="athleticsCB"></label>
+                  <span class="skillName">Атлетика</span>
+                  <p id="athleticsVal" class="skillVals">+3</p>
+                </div>
+              </div>
+
+              <div id="decSkills">
+                <h2>____лвк____</h2>
+                <div id="STdex" class="skill">
+                  <input
+                    type="checkbox"
+                    name="STdex"
+                    id="STdexCB"
+                    class="skillCB"
+                  />
+                  <label for="STdexCB"></label>
+                  <span class="skillName">Спасбросок</span>
+                  <p id="STdexVal" class="skillVals">+5</p>
+                </div>
+                <div id="acrobatics" class="skill">
+                  <input
+                    type="checkbox"
+                    name="acrobatics"
+                    id="acrobaticsCB"
+                    class="skillCB"
+                  />
+                  <label for="acrobaticsCB"></label>
+                  <span class="skillName">Акробатика</span>
+                  <p id="acrobaticsVal" class="skillVals">+4</p>
+                </div>
+                <div id="sleightOfHand" class="skill">
+                  <input
+                    type="checkbox"
+                    name="sleightOfHand"
+                    id="sleightOfHandCB"
+                    class="skillCB"
+                  />
+                  <label for="sleightOfHandCB"></label>
+                  <span class="skillName">Ловкость рук</span>
+                  <p id="sleightOfHandVal" class="skillVals">+5</p>
+                </div>
+                <div id="stealth" class="skill">
+                  <input
+                    type="checkbox"
+                    name="stealth"
+                    id="stealthCB"
+                    class="skillCB"
+                  />
+                  <label for="stealthCB"></label>
+                  <span class="skillName">Скрытность</span>
+                  <p id="stealthVal" class="skillVals"></p>
+                </div>
+              </div>
+
+              <div id="conSkills">
+                <h2>____тсл____</h2>
+                <div id="STcon" class="skill">
+                  <input
+                    type="checkbox"
+                    name="STcon"
+                    id="STconCB"
+                    class="skillCB"
+                  />
+                  <label for="STconCB"></label>
+                  <span class="skillName">Спасбросок</span>
+                  <p id="STconVal" class="skillVals"></p>
+                </div>
+              </div>
+
+              <div id="intSkills">
+                <h2>____инт____</h2>
+                <div id="STint" class="skill">
+                  <input
+                    type="checkbox"
+                    name="STint"
+                    id="STintCB"
+                    class="skillCB"
+                  />
+                  <label for="STintCB"></label>
+                  <span class="skillName">Спасбросок</span>
+                  <p id="STintVal" class="skillVals"></p>
+                </div>
+                <div id="arcana" class="skill">
+                  <input
+                    type="checkbox"
+                    name="arcana"
+                    id="arcanaCB"
+                    class="skillCB"
+                  />
+                  <label for="arcanaCB"></label>
+                  <span class="skillName">Магия</span>
+                  <p id="arcanaVal" class="skillVals"></p>
+                </div>
+                <div id="history" class="skill">
+                  <input
+                    type="checkbox"
+                    name="history"
+                    id="historyCB"
+                    class="skillCB"
+                  />
+                  <label for="historyCB"></label>
+                  <span class="skillName">История</span>
+                  <p id="historyVal" class="skillVals"></p>
+                </div>
+                <div id="investigation" class="skill">
+                  <input
+                    type="checkbox"
+                    name="investigation"
+                    id="investigationCB"
+                    class="skillCB"
+                  />
+                  <label for="investigationCB"></label>
+                  <span class="skillName">Анализ</span>
+                  <p id="investigationVal" class="skillVals"></p>
+                </div>
+                <div id="nature" class="skill">
+                  <input
+                    type="checkbox"
+                    name="nature"
+                    id="natureCB"
+                    class="skillCB"
+                  />
+                  <label for="natureCB"></label>
+                  <span class="skillName">Природа</span>
+                  <p id="natureVal" class="skillVals"></p>
+                </div>
+                <div id="religion" class="skill">
+                  <input
+                    type="checkbox"
+                    name="religion"
+                    id="religionCB"
+                    class="skillCB"
+                  />
+                  <label for="religionCB"></label>
+                  <span class="skillName">Религия</span>
+                  <p id="religionVal" class="skillVals"></p>
+                </div>
+              </div>
+
+              <div id="wisSkills">
+                <h2>____мдр____</h2>
+                <div id="STwis" class="skill">
+                  <input
+                    type="checkbox"
+                    name="STwis"
+                    id="STwisCB"
+                    class="skillCB"
+                  />
+                  <label for="STwisCB"></label>
+                  <span class="skillName">Спасбросок</span>
+                  <p id="STwisVal" class="skillVals"></p>
+                </div>
+                <div id="animalHandling" class="skill">
+                  <input
+                    type="checkbox"
+                    name="animalHandling"
+                    id="animalHandlingCB"
+                    class="skillCB"
+                  />
+                  <label for="animalHandlingCB"></label>
+                  <span class="skillName">Уход за животными</span>
+                  <p id="animalHandlingVal" class="skillVals"></p>
+                </div>
+                <div id="insight" class="skill">
+                  <input
+                    type="checkbox"
+                    name="insight"
+                    id="insightCB"
+                    class="skillCB"
+                  />
+                  <label for="insightCB"></label>
+                  <span class="skillName">Проницательность</span>
+                  <p id="insightVal" class="skillVals"></p>
+                </div>
+                <div id="medicine" class="skill">
+                  <input
+                    type="checkbox"
+                    name="medicine"
+                    id="medicineCB"
+                    class="skillCB"
+                  />
+                  <label for="medicineCB"></label>
+                  <span class="skillName">Медицина</span>
+                  <p id="medicineVal" class="skillVals"></p>
+                </div>
+                <div id="perception" class="skill">
+                  <input
+                    type="checkbox"
+                    name="perception"
+                    id="perceptionCB"
+                    class="skillCB"
+                  />
+                  <label for="perceptionCB"></label>
+                  <span class="skillName">Восприятие</span>
+                  <p id="perceptionVal" class="skillVals"></p>
+                </div>
+                <div id="survival" class="skill">
+                  <input
+                    type="checkbox"
+                    name="survival"
+                    id="survivalCB"
+                    class="skillCB"
+                  />
+                  <label for="survivalCB"></label>
+                  <span class="skillName">Выживание</span>
+                  <p id="survivalVal" class="skillVals"></p>
+                </div>
+              </div>
+
+              <div id="chaSkills">
+                <h2>____хар____</h2>
+                <div id="STcha" class="skill">
+                  <input
+                    type="checkbox"
+                    name="STcha"
+                    id="STchaCB"
+                    class="skillCB"
+                  />
+                  <label for="STchaCB"></label>
+                  <span class="skillName">Спасбросок</span>
+                  <p id="STchaVal" class="skillVals"></p>
+                </div>
+                <div id="deception" class="skill">
+                  <input
+                    type="checkbox"
+                    name="deception"
+                    id="deceptionCB"
+                    class="skillCB"
+                  />
+                  <label for="deceptionCB"></label>
+                  <span class="skillName">Обман</span>
+                  <p id="deceptionVal" class="skillVals"></p>
+                </div>
+                <div id="intimidation" class="skill">
+                  <input
+                    type="checkbox"
+                    name="intimidation"
+                    id="intimidationCB"
+                    class="skillCB"
+                  />
+                  <label for="intimidationCB"></label>
+                  <span class="skillName">Запугивание</span>
+                  <p id="intimidationVal" class="skillVals"></p>
+                </div>
+                <div id="performance" class="skill">
+                  <input
+                    type="checkbox"
+                    name="performance"
+                    id="performanceCB"
+                    class="skillCB"
+                  />
+                  <label for="performanceCB"></label>
+                  <span class="skillName">Исполнение</span>
+                  <p id="performanceVal" class="skillVals"></p>
+                </div>
+                <div id="persuasion" class="skill">
+                  <input
+                    type="checkbox"
+                    name="persuasion"
+                    id="persuasionCB"
+                    class="skillCB"
+                  />
+                  <label for="persuasionCB"></label>
+                  <span class="skillName">Убеждение</span>
+                  <p id="persuasionVal" class="skillVals"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="HPDeathWeaponsDiv">
+            <div id="HPDeathDiv">
+              <span class="healthText" id="maxHPText">Макс.ХП</span>
+              <input
+                type="number"
+                name="maxHP"
+                id="maxHP"
+                placeholder="10"
+                autocomplete="off"
+              />
+
+              <span class="healthText" id="currentHPText">Текущ.ХП</span>
+              <input
+                type="number"
+                name="currHP"
+                id="currHP"
+                placeholder="10"
+                autocomplete="off"
+              />
+
+              <span class="healthText" id="tempHPText">Врем.ХП</span>
+              <input
+                type="number"
+                name="tempHP"
+                id="tempHP"
+                placeholder="0"
+                autocomplete="off"
+              />
+
+              <span class="healthText" id="diceHPText">Кость ХП</span>
+              <span id="diceHP"></span>
+              <span id="diceHPAmount"></span>
+
+              <div id="resistancesDiv">
+                <span>Сопротивления:</span>
+                <div id="resListWithButon">
+                  <ul id="resistancesList"></ul>
+                  <button id="addResistances"></button>
+                </div>
+              </div>
+
+              <span class="healthText" id="deathThrowsText">
+                Спасброски от смерти
+              </span>
+              <span class="healthText" id="deathThrowsSuccess">Успехи</span>
+              <span class="healthText" id="deathThrowsFailure">Провалы</span>
+
+              <div id="DTCheckboxDiv">
+                <div id="DTSuccessDiv">
+                  <input
+                    type="checkbox"
+                    name="DTS1"
+                    id="DTS1"
+                    class="DTCheckbox"
+                  />
+                  <label for="DTS1" class="DTSlabel" id="DTS1CB"></label>
+                  <input
+                    type="checkbox"
+                    name="DTS2"
+                    id="DTS2"
+                    class="DTCheckbox"
+                  />
+                  <label for="DTS2" class="DTSlabel" id="DTS2CB"></label>
+                  <input
+                    type="checkbox"
+                    name="DTS3"
+                    id="DTS3"
+                    class="DTCheckbox"
+                  />
+                  <label for="DTS3" class="DTSlabel" id="DTS3CB"></label>
+                </div>
+
+                <div id="DTFailureDiv">
+                  <input
+                    type="checkbox"
+                    name="DTF1"
+                    id="DTF1"
+                    class="DTCheckbox"
+                  />
+                  <label for="DTF1" class="DTFlabel" id="DTF1CB"></label>
+                  <input
+                    type="checkbox"
+                    name="DTF2"
+                    id="DTF2"
+                    class="DTCheckbox"
+                  />
+                  <label for="DTF2" class="DTFlabel" id="DTF2CB"></label>
+                  <input
+                    type="checkbox"
+                    name="DTF3"
+                    id="DTF3"
+                    class="DTCheckbox"
+                  />
+                  <label for="DTF3" class="DTFlabel" id="DTF3CB"></label>
+                </div>
+              </div>
+            </div>
+
+            <span style="font-size: 2vw; margin: 0.5vw 0 0.5vw 0"
+              >Быстрый доступ</span
+            >
+            <div id="quickAccessWeponsDiv">
+              <table id="quickAccessWeapons">
+                <thead>
+                  <tr>
+                    <th title="name">Название</th>
+                    <th title="attackBonus">Бонус атаки</th>
+                    <th colspan="3" title="damage">Урон/Тип</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <button id="addToWeaponTableButton">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="rightSide">
+        <div id="levelDiv">
+          <span>Уровень: </span>
+          <input type="number" name="level" id="level" max="20" min="1" />
+          <button id="levelsInformationButton"></button>
+        </div>
+        <div id="CharacteristicsAndImage">
+          <div id="portrait"></div>
+
+          <div id="strengthDiv">
+            <input
+              type="number"
+              min="1"
+              max="30"
+              step="1"
+              autocomplete="off"
+              id="strVal"
+            />
+            <span id="strMod">0</span>
+            <span class="characteristicName">Сила</span>
+          </div>
+
+          <div id="dexterityDiv">
+            <input
+              type="number"
+              min="1"
+              max="30"
+              step="1"
+              autocomplete="off"
+              id="dexVal"
+            />
+            <span id="dexMod">0</span>
+            <span class="characteristicName">Ловкость</span>
+          </div>
+
+          <div id="constitutionDiv">
+            <input
+              type="number"
+              min="1"
+              max="30"
+              step="1"
+              autocomplete="off"
+              id="conVal"
+            />
+            <span id="conMod">0</span>
+            <span class="characteristicName">Телосложение</span>
+          </div>
+
+          <div id="intelligenceDiv">
+            <input
+              type="number"
+              min="1"
+              max="30"
+              step="1"
+              autocomplete="off"
+              id="intVal"
+            />
+            <span id="intMod">0</span>
+            <span class="characteristicName">Интеллект</span>
+          </div>
+
+          <div id="wisdomDiv">
+            <input
+              type="number"
+              min="1"
+              max="30"
+              step="1"
+              autocomplete="off"
+              id="wisVal"
+            />
+            <span id="wisMod">0</span>
+            <span class="characteristicName">Мудрость</span>
+          </div>
+
+          <div id="charismaDiv">
+            <input
+              type="number"
+              min="1"
+              max="30"
+              step="1"
+              autocomplete="off"
+              id="chaVal"
+            />
+            <span id="chaMod">0</span>
+            <span class="characteristicName">Харизма</span>
+          </div>
+
+          <div id="ACShield">
+            <input type="number" id="AC" autocomplete="off" placeholder="8" />
+          </div>
+
+          <div id="initiative"><span id="Initiative"></span></div>
+
+          <div id="speed">
+            <input type="text" autocomplete="off" id="Speed" />
+          </div>
+
+          <div id="profBonus">
+            <span id="PB"></span>
+            <span id="profBonusName">БМ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="levelingTip"></div>
+    <div id="resistancesPanel">
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        "
+      >
+        <span style="font-size: 1.5vw">Сопротивления/Уязвимости</span>
+        <button
+          id="resistanceInfoButton"
+          style="
+            aspect-ratio: 1/1;
+            width: 2vw;
+            background-image: url(../public/img/info.png);
+            background-size: 100% 100%;
+            background-color: transparent;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+          "
+        ></button>
+      </div>
+      <div>
+        <button
+          style="
+            width: 2.3vw;
+            height: 3.4vw;
+            background-image: url(../public/img/fullResistanceFrame.png);
+            background-size: 100% 100%;
+            background-color: transparent;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+          "
+          id="resistanceChoice"
+        ></button>
+        <button
+          style="
+            width: 2.3vw;
+            height: 3.4vw;
+            background-image: url(../public/img/immunityFrame.png);
+            background-size: 100% 100%;
+            background-color: transparent;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+          "
+          id="immunityChoise"
+        ></button>
+        <button
+          style="
+            width: 2.3vw;
+            height: 3.4vw;
+            background-image: url(../public/img/vulnerabilityFrame.png);
+            background-size: 100% 100%;
+            background-color: transparent;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+          "
+          id="vulnerabilityChoise"
+        ></button>
+      </div>
+      <div id="resistanceTypesOfDamage">
+        <button
+          id="bludgeoningChoice"
+          style="background-image: url(../public/img/bludgeoningDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="piercingChoice"
+          style="background-image: url(../public/img/piercingDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="slashingChoice"
+          style="background-image: url(../public/img/slashingDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="coldChoice"
+          style="background-image: url(../public/img/coldDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="fireChoice"
+          style="background-image: url(../public/img/fireDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="lightningChoice"
+          style="background-image: url(../public/img/lightningDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="thunderChoice"
+          style="background-image: url(../public/img/thunderDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="acidChoice"
+          style="background-image: url(../public/img/acidDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="poisonChoice"
+          style="background-image: url(../public/img/poisonDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="radiantChoice"
+          style="background-image: url(../public/img/radiantDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="necroticChoice"
+          style="background-image: url(../public/img/necroticDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="forceChoice"
+          style="background-image: url(../public/img/forceDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+        <button
+          id="psychicChoice"
+          style="background-image: url(../public/img/psychicDamage.png)"
+          class="resTypeOfDamage"
+        ></button>
+      </div>
+      <button
+        style="
+          background-image: url(../public/img/plusIcon.png);
+          background-size: 100% 100%;
+          background-color: transparent;
+          border: 0;
+          outline: 0;
+          cursor: pointer;
+          aspect-ratio: 1/1;
+          width: 2vw;
+          position: relative;
+          margin-left: 28vw;
+        "
+        id="addResButton"
+      ></button>
+
+      <div id="aboutResistances">
+        <span
+          ><strong>Сопротивления</strong
+          ><img src="../public/img/fullResistanceFrame.png" />понижают
+          получаемый урон данного типа вдвое.<br />
+          <strong>Невосприимчивость</strong
+          ><img src="../public/img/immunityFrame.png" />обнуляет получаемый урон
+          данного типа.<br />
+          <strong>Уязвимость</strong
+          ><img src="../public/img/vulnerabilityFrame.png" />повышает получаемый
+          урон данного типа вдвое.<br />
+        </span>
+      </div>
+    </div>
+
+    <div id="additionalPagesButtons">
+      <button id="openSpellsButton" class="pagesButtons">
+        <span>Заклинания</span>
+      </button>
+
+      <button id="openEquipmentAndNotes" class="pagesButtons">
+        <span>Экипировка и заметки</span>
+      </button>
+    </div>
+
+    <button
+      id="openBattleMapButton"
+      style="
+        position: absolute;
+        bottom: 1vw;
+        right: 2vw;
+        width: 4vw;
+        height: 4vw;
+        background-color: transparent;
+        background-image: url(../public/img/battleIcon.png);
+        background-size: 100% 100%;
+        border: 0;
+        filter: contrast(3);
+        cursor: pointer;
+        z-index: 3002;
+      "
+    ></button>
+
+    <div
+      id="battleMap"
+      style="
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        z-index: 3001;
+        left: 0;
+        top: 0;
+        background-color: black;
+        display: none;
+        background-size: 100% 100%;
+				justify-content: center;
+				align-items: center;
+      "
+    >
+		<div id="battleMapImage" style="position: relative; width: 95%; height: 95%; background-size: contain; background-repeat: no-repeat; background-position: center center;"></div>
+	</div>
+
+    <div id="spellsPage"></div>
+    <div id="equipmentPage"></div>
+
+    <script src="../public/js/configureAdditionalPages.js"></script>
+
+    <script src="../public/js/character.js"></script>
+    <script src="../public/js/tips.js"></script>
+
+    <script src="../public/js/obtainedSpellsPage.js"></script>
+
+    <script src="../public/js/battleMap.js"></script>
+  </body>
+</html>
