@@ -35,6 +35,9 @@
         document.querySelector("#errorMessage").innerText =
           "Invalid invite code";
       }
+      if (urlParams.get("error") == "alreadyInGame") {
+        document.querySelector("#errorMessage").innerText = "Already in game";
+      }
     </script>
   </body>
 </html>

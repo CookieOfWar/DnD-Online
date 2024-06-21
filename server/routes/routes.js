@@ -4,6 +4,9 @@ module.exports = (app) => {
   });
 
   app.get("/master", (req, res) => {
+    if (games[req.query.code]) {
+      return res.redirect("/?error=alreadyInGame");
+    }
     res.render("CharacterSheet");
   });
   app.get("/player", (req, res) => {
@@ -11,8 +14,6 @@ module.exports = (app) => {
       return res.redirect("/?error=invalidCode");
     }
 
-    res.render("game", {
-      color: "black",
-    });
+    res.render("CharacterSheet");
   });
 };

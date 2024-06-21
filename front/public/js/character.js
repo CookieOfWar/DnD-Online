@@ -1,5 +1,6 @@
 var Role;
 var urlParams;
+const PlayerId = Math.random().toString(36).substr(2, 9);
 
 const portrait = document.getElementById("portrait");
 const characterClass = document.getElementById("characterClass");
@@ -91,7 +92,6 @@ GetDataBase().then((data) => {
   races = data[1];
   racesDetails = data[2];
   spells = data[3];
-  configureElements(data[0], data[1]);
 
   document
     .getElementById("loadingDiv")
@@ -101,9 +101,15 @@ GetDataBase().then((data) => {
   if (urlParams.get("code")) {
     socket.emit("joinGame", {
       code: urlParams.get("code"),
+      id: PlayerId,
+      class: characterClass.value.toLowerCase(),
+      name: characterName.value,
     });
   }
   Role = window.location.pathname.replace("/", "");
+
+  configureElements(data[0], data[1]);
+
   configureBattleMap();
 });
 
@@ -131,6 +137,30 @@ function configureElements(classes, races) {
     characterRace.innerHTML += `<option value="${races["RacesEn"][i]}">${races["RacesRu"][i]}</option>`;
   }
 
+  characterRace.addEventListener("change", (event) => {
+    changePortrait();
+    document.getElementById("Speed").value =
+      racesDetails[`${characterRace.value.toLowerCase()}`][0]["speed"];
+  });
+  characterClass.addEventListener("change", (event) => {
+    changePortrait();
+    characterClass.style.backgroundImage = `url("../public/img/DicesClasses/${event.target.value.toLowerCase()}.png")`;
+    document.getElementById("Speed").value =
+      racesDetails[`${characterRace.value.toLowerCase()}`][0]["speed"];
+    updateTable();
+
+    if (Role == "player") {
+      socket.emit("updPlayersInfos", {
+        code: urlParams.get("code"),
+        id: PlayerId,
+        class: characterClass.value.toLowerCase(),
+        name: characterName.value,
+      });
+    }
+
+    socket.emit("updMap");
+  });
+
   characterRace.value = "Human";
   characterRace.dispatchEvent(new Event("change"));
 
@@ -148,19 +178,6 @@ function configureElements(classes, races) {
 
   document.getElementById("level").value = 1;
 }
-
-characterRace.addEventListener("change", (event) => {
-  changePortrait();
-  document.getElementById("Speed").value =
-    racesDetails[`${characterRace.value.toLowerCase()}`][0]["speed"];
-});
-characterClass.addEventListener("change", (event) => {
-  changePortrait();
-  characterClass.style.backgroundImage = `url("../public/img/DicesClasses/${event.target.value.toLowerCase()}.png")`;
-  document.getElementById("Speed").value =
-    racesDetails[`${characterRace.value.toLowerCase()}`][0]["speed"];
-  updateTable();
-});
 sexChanger.addEventListener("click", (event) => {
   Sex = Sex == "male" ? "female" : "male";
   sexChanger.innerHTML = Sex == "male" ? "М" : "Ж";
@@ -272,7 +289,6 @@ addWeaponButton.addEventListener("click", (event) => {
 		<td><input type="text" class="weaponDamageType" autocomplete="off"></td>
 		<td><button class="removeWeaponButton" onclick="removeWeaponFromTable(this)">X</button></td>
 		`;
-  // console.log(document.getElementById("quickAccessWeapons").tbody);
   document
     .getElementById("quickAccessWeapons")
     .getElementsByTagName("tbody")[0]
