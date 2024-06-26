@@ -8,11 +8,29 @@
     </script>
   </head>
   <body>
-    <h2>Game code</h2>
-    <input type="text" id="codeInput" autocomplete="off" />
-    <button id="createGame">Create game</button>
-    <button id="joinGame">Join game</button>
+    <h2>D&D</h2>
+    <input
+      type="text"
+      id="codeInput"
+      autocomplete="off"
+      placeholder="Код игры"
+    />
+    <button id="createGame">Создать игру</button>
+    <button id="joinGame">Присоединиться</button>
     <div style="color: red" id="errorMessage"></div>
+    <div>
+      <input
+        type="checkbox"
+        name="privatCheck"
+        id="privateCheck"
+      />Private<input
+        type="text"
+        id="passwordInput"
+        autocomplete="off"
+        style="display: none"
+        placeholder="Password"
+      />
+    </div>
 
     <script>
       document
@@ -21,6 +39,14 @@
           window.location.replace(
             "/master?code=" + document.querySelector("#codeInput").value
           );
+          if (document.querySelector("#privateCheck").checked) {
+            window.location.replace(
+              "/master?code=" +
+                document.querySelector("#codeInput").value +
+                "&password=" +
+                document.querySelector("#passwordInput").value
+            );
+          }
         });
       document
         .querySelector("#joinGame")
@@ -28,15 +54,39 @@
           window.location.replace(
             "/player?code=" + document.querySelector("#codeInput").value
           );
+          if (document.querySelector("#privateCheck").checked) {
+            window.location.replace(
+              "/player?code=" +
+                document.querySelector("#codeInput").value +
+                "&password=" +
+                document.querySelector("#passwordInput").value
+            );
+          }
+        });
+
+      document
+        .querySelector("#privateCheck")
+        .addEventListener("click", function () {
+          if (document.querySelector("#privateCheck").checked)
+            document.querySelector("#passwordInput").style.display = "inline";
+          else document.querySelector("#passwordInput").style.display = "none";
         });
 
       var urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get("error") == "invalidCode") {
-        document.querySelector("#errorMessage").innerText =
-          "Invalid invite code";
-      }
-      if (urlParams.get("error") == "alreadyInGame") {
-        document.querySelector("#errorMessage").innerText = "Already in game";
+      switch (urlParams.get("error")) {
+        case "invalidPassword":
+          document.querySelector("#errorMessage").innerText =
+            "Invalid password";
+          break;
+        case "invalidCode":
+          document.querySelector("#errorMessage").innerText =
+            "Invalid invite code";
+          break;
+        case "alreadyInGame":
+          document.querySelector("#errorMessage").innerText = "Already in game";
+          break;
+        default:
+          break;
       }
     </script>
   </body>

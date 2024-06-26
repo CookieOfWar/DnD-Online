@@ -20,6 +20,8 @@ var classTable;
 var lastTag = null;
 var lastSpell = null;
 
+var subRace = 0;
+
 var isLevelingOpened = false;
 var isResistancesOpened = false;
 var isResInfoOpened = false;
@@ -107,6 +109,51 @@ async function getTable() {
 classLevelingButton.addEventListener("click", () => {
   isLevelingOpened = !isLevelingOpened;
   if (isLevelingOpened) {
+    let raceDesc = ``;
+    if (
+      Object.keys(racesDetails[`${characterRace.value.toLowerCase()}`]).length >
+      1
+    ) {
+      raceDesc += `
+				<div>
+			`;
+      for (
+        let i = 0;
+        i <
+        Object.keys(racesDetails[`${characterRace.value.toLowerCase()}`])
+          .length;
+        i++
+      ) {
+        raceDesc += `
+					<button onclick="changeSubRace(this);" style="border: 0; background-color: rgba(255, 255, 255, 0.2); cursor: pointer; font-size: 1.5vw;">${
+            racesDetails[`${characterRace.value.toLowerCase()}`][i]["name"]
+          }</button>
+				`;
+      }
+
+      raceDesc += `
+				</div>
+			`;
+    }
+
+    raceDesc += `
+			<h3>Способности расы</h3>
+			`;
+
+    let tempDesc =
+      racesDetails[`${characterRace.value.toLowerCase()}`][subRace][
+        "features"
+      ].split("\n");
+    for (let i = 0; i < tempDesc.length; i++) {
+      raceDesc += `
+			<p style="font-size: 1.2vw;">>
+				<strong>${tempDesc[i].slice(0, tempDesc[i].indexOf(". "))}
+				:</strong>
+				${tempDesc[i].slice(tempDesc[i].indexOf(". ") + 1)}
+			</p>
+			`;
+    }
+
     levelingTip.style.display = "block";
     levelingTip.innerHTML =
       classTable["table"].replaceAll(
@@ -114,12 +161,33 @@ classLevelingButton.addEventListener("click", () => {
         `<span class="tableAbility" onclick="AbilityTip(event, this);">`
       ) +
       "<br>" +
+      raceDesc +
+      "<br>" +
       classTable["additionalInfo"];
   } else {
     levelingTip.style.display = "none";
     levelingTip.innerHTML = "";
   }
 });
+function changeSubRace(tag) {
+  for (
+    let i = 0;
+    i <
+    Object.keys(racesDetails[`${characterRace.value.toLowerCase()}`]).length;
+    i++
+  ) {
+    if (
+      racesDetails[`${characterRace.value.toLowerCase()}`][i]["name"] ==
+      tag.innerHTML
+    ) {
+      subRace = i;
+      break;
+    }
+  }
+
+  isLevelingOpened = !isLevelingOpened;
+  classLevelingButton.dispatchEvent(new Event("click"));
+}
 
 function AbilityTip(e, tag) {
   if (tag.innerHTML.indexOf("<") != -1) {

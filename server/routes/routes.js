@@ -7,11 +7,21 @@ module.exports = (app) => {
     if (games[req.query.code]) {
       return res.redirect("/?error=alreadyInGame");
     }
+
+    if (req.query.password == "") {
+      return res.redirect("/?error=invalidPassword");
+    }
     res.render("CharacterSheet");
   });
   app.get("/player", (req, res) => {
     if (!games[req.query.code]) {
       return res.redirect("/?error=invalidCode");
+    }
+    if (
+      games[req.query.code].password &&
+      games[req.query.code].password != req.query.password
+    ) {
+      return res.redirect("/?error=invalidPassword");
     }
 
     res.render("CharacterSheet");

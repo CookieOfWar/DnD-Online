@@ -1,6 +1,6 @@
 var Role;
 var urlParams;
-const PlayerId = Math.random().toString(36).substr(2, 9);
+const PlayerId = socket.id;
 
 const portrait = document.getElementById("portrait");
 const characterClass = document.getElementById("characterClass");
@@ -101,9 +101,10 @@ GetDataBase().then((data) => {
   if (urlParams.get("code")) {
     socket.emit("joinGame", {
       code: urlParams.get("code"),
-      id: PlayerId,
+      id: socket.id,
       class: characterClass.value.toLowerCase(),
       name: characterName.value,
+      password: urlParams.get("password"),
     });
   }
   Role = window.location.pathname.replace("/", "");
@@ -152,7 +153,7 @@ function configureElements(classes, races) {
     if (Role == "player") {
       socket.emit("updPlayersInfos", {
         code: urlParams.get("code"),
-        id: PlayerId,
+        id: socket.id,
         class: characterClass.value.toLowerCase(),
         name: characterName.value,
       });

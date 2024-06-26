@@ -7,12 +7,26 @@ module.exports = (io) => {
     socket.on("playerMovement", (data) => {
       io.to(currentCode).emit("playerMove", data);
     });
+    socket.on("playerRotation", (data) => {
+      io.to(currentCode).emit("playerRotation", data);
+    });
+    socket.on("scalePlayer", (data) => {
+      io.to(currentCode).emit("scalePlayer", data);
+    });
+    socket.on("endOfScaling", (data) => {
+      io.to(currentCode).emit("endOfScaling", data);
+    });
 
     socket.on("joinGame", function (data) {
       currentCode = data.code;
       socket.join(currentCode);
+      console.log("called joinGame");
       if (!games[currentCode]) {
-        games[currentCode] = { players: {} };
+        games[currentCode] = {
+          players: {},
+          password: data.password,
+          master: data.id,
+        };
         console.log(games);
         return;
       }
@@ -29,8 +43,21 @@ module.exports = (io) => {
     socket.on("disconnect", function () {
       console.log("socket disconnected");
       if (currentCode) {
-        io.to(currentCode).emit("gameOverDisconnect");
-        delete games[currentCode];
+        if (!games[currentCode]) return;
+        if (games[currentCode]["master"] == socket.id) {
+          delete games[currentCode];
+          console.log(games);
+          return;
+        } else if (
+          Object.keys(games[currentCode]["players"]).indexOf(socket.id) != -1
+        ) {
+          delete games[currentCode]["players"][socket.id];
+          io.to(currentCode).emit(
+            "addPlayerToBM",
+            games[currentCode]["players"]
+          );
+        } else console.error("Undefined player disconnected");
+        console.log(games);
       }
     });
 
@@ -48,6 +75,13 @@ module.exports = (io) => {
 
       if (games[currentCode]["map"])
         io.to(currentCode).emit("setBMImage", games[currentCode]["map"]);
+    });
+
+    socket.on("addEnemy", (data) => {
+      io.to(currentCode).emit("addEnemy", data);
+    });
+    socket.on("removeEnemy", (data) => {
+      io.to(currentCode).emit("removeEnemy", data);
     });
   });
 };
