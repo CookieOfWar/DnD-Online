@@ -157,9 +157,8 @@ function configureElements(classes, races) {
         class: characterClass.value.toLowerCase(),
         name: characterName.value,
       });
+      socket.emit("updMap");
     }
-
-    socket.emit("updMap");
   });
 
   characterRace.value = "Human";

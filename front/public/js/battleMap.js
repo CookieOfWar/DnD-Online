@@ -8,7 +8,8 @@ var lastScale = null;
 var startCenter = null; // center of player before scaling
 
 var clickTime = 0; // checks whether pressing or holding is performed
-var enemyCount = 0;
+var enemiesList = [];
+var enemiesCount = 0;
 
 function configureBattleMap() {
   let battleMapImage = document.getElementById("battleMapImage");
@@ -224,7 +225,6 @@ socket.on("addPlayerToBM", (players) => {
   addPlayerToMap(players);
 });
 function addPlayerToMap(players) {
-  console.log(players);
   document.getElementById("battleMapImage").innerHTML = "";
   for (let i = 0; i < Object.keys(players).length; i++) {
     console.log("Player added");
@@ -305,15 +305,6 @@ socket.on("playerRotation", (data) => {
 
 //upd players scale
 socket.on("scalePlayer", (data) => {
-  // let tempscaling =
-  //   +document
-  //     .getElementById(`PlayerOnMap-${data.id}`)
-  //     .style.transform.split("(")[1]
-  //     .split(")")[0]
-  //     .split(" ")[0] *
-  //   data.scaling *
-  //   1;
-
   if (
     +document
       .getElementById(`PlayerOnMap-${data.id}`)
@@ -373,8 +364,7 @@ socket.on("endOfScaling", (data) => {
 });
 
 socket.on("addEnemy", (data) => {
-  document.getElementById("battleMapImage").innerHTML += `
-		<div style='
+  let tempEnemyString = `<div style='
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -388,33 +378,40 @@ socket.on("addEnemy", (data) => {
 			transform: scale(1);
 			'
 			class="playerOnMap"
-			id="PlayerOnMap-Enemy${enemyCount}">
+			id="PlayerOnMap-Enemy${enemiesCount}">
 			<img src="../public/img/rotateArrow.png" style="position: absolute; top: 110%; width: 60%; height: 20%; transform-origin: 50% -300%;" class="rotateArrow"/>
-			<div class="playerControls" id="playerControls-Enemy${enemyCount}" style="position: absolute; display: none; width: 100%; height: 100%; border: 1px solid white; top: 0; left: 0;">
-				<div class="rotationControls" id="rotationControls-Enemy${enemyCount}" style="position: absolute; width: 10%; height: 10%; border: 1px solid white; border-radius: 50%; left: 45%; top: 170%; background-color: yellow; transform-origin: 50% -1100%;">
+			<div class="playerControls" id="playerControls-Enemy${enemiesCount}" style="position: absolute; display: none; width: 100%; height: 100%; border: 1px solid white; top: 0; left: 0;">
+				<div class="rotationControls" id="rotationControls-Enemy${enemiesCount}" style="position: absolute; width: 10%; height: 10%; border: 1px solid white; border-radius: 50%; left: 45%; top: 170%; background-color: yellow; transform-origin: 50% -1100%;">
 				</div>
-				<div class="sizeControls" id="sizeControls-Enemy${enemyCount}" style="position: absolute; width: 10%; height: 10%; border: 1px solid white; top: 110%; left: 110%;">
+				<div class="sizeControls" id="sizeControls-Enemy${enemiesCount}" style="position: absolute; width: 10%; height: 10%; border: 1px solid white; top: 110%; left: 110%;">
 				</div>
-				<div class="deletePlayerButton" id="deletePlayerButton-Enemy${enemyCount}" style="display: none; position: absolute; width: 15%; height: 15%; top: -7.5%; right: -7.5%; border-radius: 50%; background-color: red; background-image: linear-gradient(-45deg, transparent 0% 45%, white 45% 55%, transparent 55% 100%), linear-gradient(45deg, transparent 0% 45%, white 45% 55%, transparent 55% 100%);">
+				<div class="deletePlayerButton" id="deletePlayerButton-Enemy${enemiesCount}" style="display: none; position: absolute; width: 15%; height: 15%; top: -7.5%; right: -7.5%; border-radius: 50%; background-color: red; background-image: linear-gradient(-45deg, transparent 0% 45%, white 45% 55%, transparent 55% 100%), linear-gradient(45deg, transparent 0% 45%, white 45% 55%, transparent 55% 100%);">
 				</div>
 			</div>
 		</div>
 	`;
+  let tempEnemyElement = document.createElement("div");
+  tempEnemyElement.innerHTML = tempEnemyString;
+  let tempEnemy = tempEnemyElement.firstChild;
 
-  enemyCount++;
+  // document.getElementById("battleMapImage").innerHTML += tempEnemy;
+  document.getElementById("battleMapImage").appendChild(tempEnemy);
 
-  document.getElementById(`PlayerOnMap-Enemy${enemyCount - 1}`).style.left =
+  enemiesList.push(tempEnemy);
+  enemiesCount++;
+
+  document.getElementById(`PlayerOnMap-Enemy${enemiesCount - 1}`).style.left =
     "0px";
-  document.getElementById(`PlayerOnMap-Enemy${enemyCount - 1}`).style.top =
+  document.getElementById(`PlayerOnMap-Enemy${enemiesCount - 1}`).style.top =
     "0px";
   document
-    .getElementById(`PlayerOnMap-Enemy${enemyCount - 1}`)
+    .getElementById(`PlayerOnMap-Enemy${enemiesCount - 1}`)
     .querySelector("img").style.transform = "rotate(0deg)";
 
   if (Role == "master") {
     // set listeners to controll any player
     document.getElementById(
-      `deletePlayerButton-Enemy${enemyCount - 1}`
+      `deletePlayerButton-Enemy${enemiesCount - 1}`
     ).style.display = "block";
     setMasterListeners();
   }
@@ -516,16 +513,27 @@ function setMasterListeners() {
     });
   });
 
-  for (let i = 0; i < enemyCount; i++) {
-    if (document.getElementById(`PlayerOnMap-Enemy${i}`) == null) continue;
-    document
-      .getElementById(`deletePlayerButton-Enemy${i}`)
+  enemiesList.forEach((enemy) => {
+    enemy
+      .querySelector(".deletePlayerButton")
       .addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        socket.emit("removeEnemy", { id: `PlayerOnMap-Enemy${i}` });
+        socket.emit("removeEnemy", {
+          id: enemy.querySelector(".deletePlayerButton").id,
+        });
       });
-  }
+  });
+  // for (let i = 0; i < enemiesList; i++) {
+  //   if (document.getElementById(`PlayerOnMap-Enemy${i}`) == null) continue;
+  //   document
+  //     .getElementById(`deletePlayerButton-Enemy${i}`)
+  //     .addEventListener("click", (e) => {
+  //       e.preventDefault();
+  //       e.stopPropagation();
+  //       socket.emit("removeEnemy", { id: `PlayerOnMap-Enemy${i}` });
+  //     });
+  // }
 }
 
 function setPlayerListeners() {
@@ -614,8 +622,16 @@ function setPlayerListeners() {
 
 socket.on("removeEnemy", (data) => {
   console.log("removing enemy", data.id);
-  // document
-  //   .getElementById(data.id)
-  //   .parentElement.removeChild(document.getElementById(data.id));
-  document.getElementById(data.id).remove();
+  document
+    .getElementById(`PlayerOnMap-` + data.id.replace("deletePlayerButton-", ""))
+    .remove();
+
+  enemiesList.splice(
+    enemiesList.indexOf(
+      document.getElementById(
+        `PlayerOnMap-` + data.id.replace("deletePlayerButton-", "")
+      )
+    ),
+    1
+  );
 });
