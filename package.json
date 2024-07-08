@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "node index.js",
+    "prebuild": "npm i",
     "build": "npx vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
