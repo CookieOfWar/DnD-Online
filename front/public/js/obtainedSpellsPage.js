@@ -224,7 +224,7 @@ function linkSpell(button) {
     }
     return acc;
   }, {});
-  if (!filteredSpell.length) {
+  if (!Object.keys(filteredSpell).length) {
     alert("У данного класса нет заклинаний");
     return;
   }
