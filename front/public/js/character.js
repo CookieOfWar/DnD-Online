@@ -301,3 +301,7 @@ function removeWeaponFromTable(weapon) {
     .getElementsByTagName("tbody")[0]
     .removeChild(weapon.parentElement.parentElement);
 }
+
+socket.on("joinGameFail", () => {
+  window.location.replace("/?error=idNotExist");
+});

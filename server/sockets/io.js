@@ -22,6 +22,10 @@ module.exports = (io) => {
       socket.join(currentCode);
       console.log("called joinGame");
       if (!games[currentCode]) {
+        if (data.id === undefined) {
+          io.to(currentCode).emit("joinGameFail");
+          return;
+        }
         games[currentCode] = {
           players: {},
           password: data.password,
