@@ -36,6 +36,9 @@
       document
         .querySelector("#createGame")
         .addEventListener("click", function () {
+          if (document.querySelector("#codeInput").value == "") {
+            window.location.replace("/?error=emptyCode");
+          }
           window.location.replace(
             "/master?code=" + document.querySelector("#codeInput").value
           );
@@ -84,6 +87,10 @@
           break;
         case "alreadyInGame":
           document.querySelector("#errorMessage").innerText = "Already in game";
+          break;
+        case "emptyCode":
+          document.querySelector("#errorMessage").innerText =
+            "Code cannot be empty";
           break;
         default:
           break;

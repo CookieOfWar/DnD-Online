@@ -117,13 +117,25 @@ function configureBattleMap() {
             e.movementY +
             "px";
 
+          console.log(
+            parseInt(
+              document
+                .getElementById(`PlayerOnMap-${tempId}`)
+                .style.left.replace("px", "")
+            )
+          );
+
+          document.getElementById(`PlayerOnMap-${tempId}`).style.left = playerX;
+          document.getElementById(`PlayerOnMap-${tempId}`).style.top = playerY;
+
           socket.emit("playerMovement", {
             id: tempId,
             move: {
-              x: playerX,
-              y: playerY,
+              x: document.getElementById(`PlayerOnMap-${tempId}`).style.left,
+              y: document.getElementById(`PlayerOnMap-${tempId}`).style.top,
             },
           });
+
           break;
         case 3:
           tempId = (Role == "master" ? draggingMasterId : socket.id).replace(
@@ -289,6 +301,7 @@ function addPlayerToMap(players) {
 
 //upd players position
 socket.on("playerMove", (data) => {
+  if (data.id == socket.id) return;
   document.getElementById(`PlayerOnMap-${data.id}`).style.left = data.move.x;
   document.getElementById(`PlayerOnMap-${data.id}`).style.top = data.move.y;
 });
@@ -584,6 +597,7 @@ function setPlayerListeners() {
       e.stopPropagation();
       dragging = true;
       draggingIndex = 4;
+      clickTime = new Date();
 
       let center = {
         x:
@@ -617,6 +631,13 @@ function setPlayerListeners() {
       startScale = Math.sqrt(
         (center.x - controlCenter.x) ** 2 + (center.y - controlCenter.y) ** 2
       );
+    });
+  document
+    .getElementById(`PlayerOnMap-${socket.id}`)
+    .addEventListener("click", () => {
+      if (new Date() - clickTime <= 200) {
+        return;
+      }
     });
 }
 
