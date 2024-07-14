@@ -38,6 +38,7 @@
         .addEventListener("click", function () {
           if (document.querySelector("#codeInput").value == "") {
             window.location.replace("/?error=emptyCode");
+            return;
           }
           window.location.replace(
             "/master?code=" + document.querySelector("#codeInput").value
