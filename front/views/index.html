@@ -40,6 +40,10 @@
             window.location.replace("/?error=emptyCode");
             return;
           }
+          if (socket.id == undefined) {
+            window.location.replace("/?error=idNotExist");
+            return;
+          }
           window.location.replace(
             "/master?code=" + document.querySelector("#codeInput").value
           );
@@ -92,6 +96,10 @@
         case "emptyCode":
           document.querySelector("#errorMessage").innerText =
             "Code cannot be empty";
+          break;
+        case "idNotExist":
+          document.querySelector("#errorMessage").innerText =
+            "Please wait, your id still not created";
           break;
         default:
           break;
