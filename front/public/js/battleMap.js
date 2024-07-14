@@ -60,11 +60,14 @@ function configureBattleMap() {
   document.addEventListener("mouseup", (e) => {
     dragging = false;
     if (draggingIndex == 4) {
-      let tempId = (Role == "master" ? draggingMasterId : socket.id).replace(
-        "sizeControls-",
-        ""
-      );
-      socket.emit("endOfScaling", { id: tempId, lastScale: lastScale });
+      console.log(new Date() - clickTime);
+      if (new Date() - clickTime >= 200) {
+        let tempId = (Role == "master" ? draggingMasterId : socket.id).replace(
+          "sizeControls-",
+          ""
+        );
+        socket.emit("endOfScaling", { id: tempId, lastScale: lastScale });
+      }
     }
     draggingIndex = 0;
     draggingMasterId = null;
@@ -117,19 +120,12 @@ function configureBattleMap() {
             e.movementY +
             "px";
 
-          console.log(
-            parseInt(
-              document
-                .getElementById(`PlayerOnMap-${tempId}`)
-                .style.left.replace("px", "")
-            )
-          );
-
           document.getElementById(`PlayerOnMap-${tempId}`).style.left = playerX;
           document.getElementById(`PlayerOnMap-${tempId}`).style.top = playerY;
 
           socket.emit("playerMovement", {
             id: tempId,
+            socketid: socket.id,
             move: {
               x: document.getElementById(`PlayerOnMap-${tempId}`).style.left,
               y: document.getElementById(`PlayerOnMap-${tempId}`).style.top,
@@ -187,6 +183,13 @@ function configureBattleMap() {
             x: e.clientX,
             y: e.clientY,
           };
+          console.log(
+            "controlCenter",
+            controlCenter,
+            "startCenter",
+            startCenter
+          );
+
           let tempScale = Math.sqrt(
             Math.pow(controlCenter.x - startCenter.x, 2) +
               Math.pow(controlCenter.y - startCenter.y, 2)
@@ -301,7 +304,7 @@ function addPlayerToMap(players) {
 
 //upd players position
 socket.on("playerMove", (data) => {
-  if (data.id == socket.id) return;
+  if (data.socketid == socket.id) return;
   document.getElementById(`PlayerOnMap-${data.id}`).style.left = data.move.x;
   document.getElementById(`PlayerOnMap-${data.id}`).style.top = data.move.y;
 });
@@ -482,6 +485,7 @@ function setMasterListeners() {
       dragging = true;
       draggingIndex = 4;
       draggingMasterId = el.id;
+      clickTime = new Date();
 
       let center = {
         x:
@@ -631,13 +635,6 @@ function setPlayerListeners() {
       startScale = Math.sqrt(
         (center.x - controlCenter.x) ** 2 + (center.y - controlCenter.y) ** 2
       );
-    });
-  document
-    .getElementById(`PlayerOnMap-${socket.id}`)
-    .addEventListener("click", () => {
-      if (new Date() - clickTime <= 200) {
-        return;
-      }
     });
 }
 
