@@ -11,7 +11,7 @@ module.exports = (app) => {
     if (req.query.password == "") {
       return res.redirect("/?error=invalidPassword");
     }
-    res.render("CharacterSheet");
+    res.render("MasterScreen");
   });
   app.get("/player", (req, res) => {
     if (!games[req.query.code]) {
