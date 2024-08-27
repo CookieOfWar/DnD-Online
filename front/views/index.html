@@ -7,29 +7,76 @@
       let socket = io();
     </script>
   </head>
-  <body>
-    <h2>D&D</h2>
-    <input
-      type="text"
-      id="codeInput"
-      autocomplete="off"
-      placeholder="Код игры"
-    />
-    <button id="createGame">Создать игру</button>
-    <button id="joinGame">Присоединиться</button>
-    <div style="color: red" id="errorMessage"></div>
-    <div>
+  <body
+    style="
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: rgb(49, 49, 49);
+      display: flex;
+      justify-content: center;
+    "
+  >
+    <h2
+      style="
+        font-size: 5vh;
+        color: red;
+        @font-face {
+          font-family: 'Cattedrale';
+          src: url(../public/fonts/Cattedrale.ttf) format('truetype');
+        }
+        font-family: Cattedrale;
+      "
+    >
+      D&D
+    </h2>
+
+    <div
+      style="
+        position: absolute;
+        top: 10vh;
+        width: 90vh;
+        height: 90vh;
+        background-image: url(../public/img/Dragon.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+      "
+    ></div>
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50vh;
+      "
+    >
       <input
-        type="checkbox"
-        name="privatCheck"
-        id="privateCheck"
-      />Private<input
         type="text"
-        id="passwordInput"
+        id="codeInput"
         autocomplete="off"
-        style="display: none"
-        placeholder="Password"
+        placeholder="Код игры"
+        style="font-size: 1.5vw"
       />
+      <div>
+        <button id="createGame" style="font-size: 1.5vw">Создать игру</button>
+        <button id="joinGame" style="font-size: 1.5vw">Присоединиться</button>
+      </div>
+      <div style="color: red" id="errorMessage"></div>
+      <div>
+        <input type="checkbox" name="privatCheck" id="privateCheck" /><label
+          style="font-size: 1.3vw; color: white"
+          >Приватная игра</label
+        ><input
+          type="text"
+          id="passwordInput"
+          autocomplete="off"
+          style="display: none"
+          placeholder="Пароль"
+        />
+      </div>
     </div>
 
     <script>

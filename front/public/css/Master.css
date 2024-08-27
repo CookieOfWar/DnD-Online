@@ -2,9 +2,8 @@ body {
   overflow: hidden;
 }
 
-#ChatDiv {
+#chatDiv {
   position: absolute;
-  display: flex;
   flex-direction: column;
   justify-content: end;
   bottom: 5vw;
@@ -15,6 +14,8 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   font-size: 1.3vw;
+
+  overflow: hidden;
 }
 
 #chatList {
@@ -25,10 +26,13 @@ body {
 #chatMessageDiv {
   width: 100%;
   height: 2vw;
-  background-color: aqua;
+  background-color: rgb(43, 43, 43);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding-left: 0.2vw;
+  padding-right: 0.1vw;
+  overflow: hidden;
 }
 
 #chatMessageText {
@@ -37,4 +41,19 @@ body {
   color: white;
   font-size: 1.2vw;
   outline: none;
+}
+
+#chatMessageReceiver {
+  width: 20%;
+  font-size: 1.2vw;
+}
+
+#sendChatMessageButton {
+  width: 5%;
+  height: 100%;
+  background-color: transparent;
+  background-image: url(../img/send_icon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 0;
 }

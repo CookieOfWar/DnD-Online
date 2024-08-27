@@ -1,6 +1,11 @@
+const chatButton = document.getElementById("openChatButton");
+const chatDiv = document.getElementById("chatDiv");
+
 var Role;
 var urlParams;
 const PlayerId = socket.id;
+
+var PlayersList = [];
 
 var classes, races, racesDetails, spells;
 
@@ -51,4 +56,59 @@ async function GetDataBase() {
     }),
   ]);
   return res.reduce((arr, curr) => arr.concat(curr.value), []);
+}
+
+function GetPlayersList() {
+  socket.emit("getPlayersList", {});
+}
+socket.on("getPlayersList", (data) => {
+  PlayersList = [];
+  let keys = Object.keys(data);
+  for (let i = 0; i < keys.length; i++) {
+    PlayersList.push([data[keys[i]].name, data[keys[i]].id]);
+  }
+
+  console.log(PlayersList);
+  updChatReceivers();
+});
+
+function updChatReceivers() {
+  chatDiv.querySelector("#chatMessageReceiver").innerHTML = "";
+
+  chatDiv.querySelector(
+    "#chatMessageReceiver"
+  ).innerHTML = `<option selected value="All">Все</option>`;
+  for (let i = 0; i < PlayersList.length; i++) {
+    chatDiv.querySelector(
+      "#chatMessageReceiver"
+    ).innerHTML += `<option value="${PlayersList[i][1]}">${PlayersList[i][0]}</option>`;
+  }
+}
+
+chatButton.addEventListener("click", () => {
+  if (chatDiv.style.display === "none") {
+    GetPlayersList();
+    chatDiv.style.display = "flex";
+  } else {
+    chatDiv.style.display = "none";
+  }
+});
+
+chatDiv
+  .querySelector("#sendChatMessageButton")
+  .addEventListener(
+    "click",
+    sendMessage(
+      chatDiv.querySelector("#chatMessageText").value,
+      chatDiv.querySelector("#chatMessageReceiver").selectedIndex,
+      "Master"
+    )
+  );
+
+function sendMessage(message, receiver, from) {
+  socket.emit("chatMessage", {
+    message: message,
+    receiver: receiver,
+    from: from,
+  });
 }

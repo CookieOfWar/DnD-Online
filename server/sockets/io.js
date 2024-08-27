@@ -87,5 +87,14 @@ module.exports = (io) => {
     socket.on("removeEnemy", (data) => {
       io.to(currentCode).emit("removeEnemy", data);
     });
+
+    socket.on("getPlayersList", () => {
+      console.log("Needed players list");
+      io.to(currentCode).emit("getPlayersList", games[currentCode]["players"]);
+    });
+
+    socket.on("chatMessage", (data) => {
+      io.to(currentCode).to(data.receiver).emit("chatMessage", data);
+    });
   });
 };

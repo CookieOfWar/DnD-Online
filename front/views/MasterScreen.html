@@ -128,13 +128,22 @@
         "
       ></button>
     </div>
-    <div id="ChatDiv">
+    <div id="chatDiv" style="display: none">
       <ul id="chatList">
         <li>Test</li>
       </ul>
 
       <div id="chatMessageDiv">
-        <input type="text" name="chatMessageText" id="chatMessageText" />
+        <input
+          type="text"
+          name="chatMessageText"
+          id="chatMessageText"
+          placeholder="Сообщение"
+        />
+        <select name="chatMessageReceiver" id="chatMessageReceiver">
+          <option value="All">Все</option>
+        </select>
+        <button id="sendChatMessageButton"></button>
       </div>
     </div>
     <!--#endregion-->

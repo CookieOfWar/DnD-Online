@@ -160,6 +160,14 @@ function configureElements(classes, races) {
       socket.emit("updMap");
     }
   });
+  characterName.addEventListener("change", () => {
+    socket.emit("updPlayersInfos", {
+      code: urlParams.get("code"),
+      id: socket.id,
+      class: characterClass.value.toLowerCase(),
+      name: characterName.value,
+    });
+  });
 
   characterRace.value = "Human";
   characterRace.dispatchEvent(new Event("change"));
