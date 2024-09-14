@@ -24,8 +24,11 @@ const sexChanger = document.getElementById("sexChanger");
 var Sex = "male";
 
 const addWeaponButton = document.getElementById("addToWeaponTableButton");
+const chatButton = document.getElementById("openChatButton");
+const chatList = document.getElementById("chatList");
+const chatNotify = document.getElementById("ChatNotify");
 
-const skillList = [...document.getElementsByClassName("skillVals")];
+const skillList = document.querySelectorAll(".skillVals");
 /*[
   STstr,
   athletics,
@@ -52,7 +55,7 @@ const skillList = [...document.getElementsByClassName("skillVals")];
 	persuasion
 ]*/
 
-const skillCBList = [...document.getElementsByClassName("skillCB")];
+const skillCBList = document.querySelectorAll(".skillCB");
 /*[
   STstrCB,
   athleticsCB,
@@ -313,3 +316,63 @@ function removeWeaponFromTable(weapon) {
 socket.on("joinGameFail", () => {
   window.location.replace("/?error=idNotExist");
 });
+
+chatButton.addEventListener("click", () => {
+  if (chatDiv.style.display === "none") {
+    chatDiv.style.display = "flex";
+
+    if (chatNotify.style.display == "block") chatNotify.style.display = "none";
+
+    chatDiv.querySelector("#chatMessageText").focus();
+  } else {
+    chatDiv.style.display = "none";
+  }
+});
+
+chatDiv
+  .querySelector("#sendChatMessageButton")
+  .addEventListener("click", () => {
+    sendMessage(
+      chatDiv.querySelector("#chatMessageText").value,
+      "Master",
+      characterName.value
+    );
+    chatDiv.querySelector("#chatMessageText").value = "";
+  });
+chatDiv
+  .querySelector("#chatMessageText")
+  .addEventListener("keyup", function (e) {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      chatDiv.querySelector("#sendChatMessageButton").click();
+    }
+
+    if (e.key == "Escape" || e.keyCode == 27) {
+      chatButton.dispatchEvent(new Event("click"));
+    }
+  });
+
+function sendMessage(message, receiver, from) {
+  socket.emit("chatMessage", {
+    message: message,
+    receiver: receiver,
+    from: from,
+  });
+
+  let li = document.createElement("li");
+  li.innerText = `to[Master]: ${message}`;
+  chatList.appendChild(li);
+}
+
+socket.on("chatMessage", (message) => {
+  let li = document.createElement("li");
+  li.innerText = "Master: " + message.message;
+  chatList.appendChild(li);
+
+  if (chatNotify.style.display == "none") chatNotify.style.display = "block";
+});
+
+function sendEmail() {
+  location.href =
+    "mailto:dndonline.supp@gmail.com?subject=Ошибка в работе сайта";
+  alert("Вы будете перенаправлены на почту, спасибо за фидбэк!");
+}

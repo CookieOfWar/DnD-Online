@@ -94,7 +94,15 @@ module.exports = (io) => {
     });
 
     socket.on("chatMessage", (data) => {
-      io.to(currentCode).to(data.receiver).emit("chatMessage", data);
+      if (data.receiver == -1) {
+        io.to(currentCode).emit("chatMessage", data);
+        return;
+      }
+      let rec = data.receiver;
+      if (data.receiver == "Master") {
+        rec = games[currentCode]["master"];
+      }
+      io.to(rec).emit("chatMessage", data);
     });
   });
 };

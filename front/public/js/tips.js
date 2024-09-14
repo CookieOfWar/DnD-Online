@@ -10,7 +10,7 @@ const resistancesList = document.getElementById("resistancesList");
 const resistanceChoise = document.getElementById("resistanceChoice");
 const immunityChoise = document.getElementById("immunityChoise");
 const vulnerabilityChoise = document.getElementById("vulnerabilityChoise");
-const resTypesChoises = [...document.getElementsByClassName("resTypeOfDamage")];
+const resTypesChoises = document.querySelectorAll(".resTypeOfDamage");
 const addResButton = document.getElementById("addResButton");
 const resInfoButton = document.getElementById("resistanceInfoButton");
 var resistanceType = 0;
@@ -475,7 +475,8 @@ resTypesChoises.forEach((resType) => {
       resType.style.border = "0";
     });
     resType.style.border = "1px solid yellow";
-    resDamageType = resTypesChoises.indexOf(resType) + 1;
+    //console.log();
+    resDamageType = Array.from(resTypesChoises).indexOf(resType) + 1;
   });
 });
 
@@ -499,14 +500,9 @@ addResButton.addEventListener("click", () => {
       ][resistanceType - 1]
     });width: 1.7vw;height: 2.7vw;background-size: 100% 100%;border: 0;outline: 0;">
 		</button>
-		<div onclick="removeRes(this, 1)" style="background-image: url(../public/img/${typeColorsImages[
-      Object.keys(typeColorsImages)[resDamageType - 1]
-    ][1]
-      .replace("background-image: url('../img/", "")
-      .replace(
-        "');",
-        ""
-      )}); position: absolute; width: 1.2vw; height: 1.2vw; top: 0; margin-left: 0.25vw; margin-top: 0.8vw; background-size: 100% 100%;">
+		<div onclick="removeRes(this, 1)" style="${
+      typeColorsImages[Object.keys(typeColorsImages)[resDamageType - 1]][1]
+    }; position: absolute; width: 1.2vw; height: 1.2vw; top: 0; margin-left: 0.25vw; margin-top: 0.8vw; background-size: 100% 100%;">
 		</div>
 	</div>
 	`;

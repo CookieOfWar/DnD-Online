@@ -14,6 +14,11 @@
     </script>
   </head>
   <body>
+    <div id="cat" style="display: none"></div>
+    <div id="cap" style="position: absolute; bottom: 3vh; left: 1vw">
+      <input type="checkbox" name="catCap" id="catCap" />Кот-Заглушка
+    </div>
+
     <div
       id="loadingDiv"
       style="
@@ -33,6 +38,29 @@
         style="width: 3vw; height: 3vw"
       />
     </div>
+
+    <label
+      for="masterSheetsInput"
+      id="masterSheetsLabel"
+      style="
+        position: absolute;
+        left: 1vw;
+        top: 1vh;
+        width: 7vw;
+        height: 1vw;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        font-size: 2vw;
+        z-index: 400;
+      "
+      >+ Файл</label
+    >
+    <input
+      type="file"
+      id="masterSheetsInput"
+      accept="image/png, image/jpeg, image/jpg"
+      style="position: absolute; visibility: hidden"
+    />
 
     <!--#region BattleMap -->
     <button
@@ -109,6 +137,7 @@
           height: 20%;
           border-radius: 50%;
           background-color: red;
+          display: none;
         "
       ></div>
       <button
@@ -129,9 +158,7 @@
       ></button>
     </div>
     <div id="chatDiv" style="display: none">
-      <ul id="chatList">
-        <li>Test</li>
-      </ul>
+      <ul id="chatList"></ul>
 
       <div id="chatMessageDiv">
         <input
@@ -146,6 +173,24 @@
         <button id="sendChatMessageButton"></button>
       </div>
     </div>
+    <!--#endregion-->
+
+    <!--#region feedback-->
+    <button
+      style="
+        position: absolute;
+        top: 1vw;
+        right: 1vw;
+        width: 3vw;
+        height: 3vw;
+        background-color: transparent;
+        background-image: url(../public/img/email-icon.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border: 0;
+      "
+      onclick="sendEmail()"
+    ></button>
     <!--#endregion-->
 
     <!--#region Includes-->

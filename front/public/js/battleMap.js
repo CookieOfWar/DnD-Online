@@ -438,7 +438,7 @@ socket.on("addEnemy", (data) => {
 });
 
 function setMasterListeners() {
-  [...document.getElementsByClassName("playerOnMap")].forEach((el) => {
+  document.querySelectorAll(".playerOnMap").forEach((el) => {
     el?.addEventListener("mousedown", (e) => {
       clickTime = new Date();
       e.preventDefault();
@@ -468,7 +468,7 @@ function setMasterListeners() {
     });
   });
 
-  [...document.getElementsByClassName("rotationControls")].forEach((el) => {
+  document.querySelectorAll(".rotationControls").forEach((el) => {
     el?.addEventListener("mousedown", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -478,7 +478,7 @@ function setMasterListeners() {
     });
   });
 
-  [...document.getElementsByClassName("sizeControls")].forEach((el) => {
+  document.querySelectorAll(".sizeControls").forEach((el) => {
     el?.addEventListener("mousedown", (e) => {
       e.preventDefault();
       e.stopPropagation();

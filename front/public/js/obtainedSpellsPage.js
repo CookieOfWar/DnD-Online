@@ -93,7 +93,7 @@ function addSpell(spellNumber) {
 }
 
 function updListenersOnSkillsInputs() {
-  [...document.getElementsByClassName("spellName")].forEach((button) => {
+  document.querySelectorAll(".spellName").forEach((button) => {
     button.addEventListener("input", (e) => {
       if (e.target.value == "") {
         button.parentElement.querySelector(".linkSpellButton").style.display =
@@ -111,101 +111,92 @@ function updListenersOnSkillsInputs() {
     });
   });
 
-  [...document.getElementsByClassName("removeSpellButton")].forEach(
-    (button) => {
-      button.addEventListener("click", (e) => {
-        document.getElementById("spellsOfCurrentLevelDiv").style.display =
-          "none";
-        document
-          .getElementById("cancelCustomSpellButton")
-          .dispatchEvent(new Event("click"));
+  document.querySelectorAll(".removeSpellButton").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      document.getElementById("spellsOfCurrentLevelDiv").style.display = "none";
+      document
+        .getElementById("cancelCustomSpellButton")
+        .dispatchEvent(new Event("click"));
 
-        if (
-          button.parentElement.innerHTML.indexOf(
-            `<span class="spellName" onclick="SpellTip(null, this, false, null, true);" style="cursor: pointer; font-weight: bold; text-decoration: underline; font-size: 1vw; color: black;">`
-          ) != -1
-        ) {
-          let filteredSpelltemp = Object.keys(customSpells).reduce(
-            (acc, key) => {
-              let filteredSpellstemp = customSpells[key].filter((spell) => {
-                if (
+      if (
+        button.parentElement.innerHTML.indexOf(
+          `<span class="spellName" onclick="SpellTip(null, this, false, null, true);" style="cursor: pointer; font-weight: bold; text-decoration: underline; font-size: 1vw; color: black;">`
+        ) != -1
+      ) {
+        let filteredSpelltemp = Object.keys(customSpells).reduce((acc, key) => {
+          let filteredSpellstemp = customSpells[key].filter((spell) => {
+            if (
+              button.parentElement
+                .querySelector("span")
+                .innerHTML.indexOf(`<dialog`) != -1
+            ) {
+              let name = button.parentElement
+                .querySelector("span")
+                .innerHTML.slice(
+                  0,
                   button.parentElement
                     .querySelector("span")
-                    .innerHTML.indexOf(`<dialog`) != -1
-                ) {
-                  let name = button.parentElement
-                    .querySelector("span")
-                    .innerHTML.slice(
-                      0,
-                      button.parentElement
-                        .querySelector("span")
-                        .innerHTML.indexOf(`<dialog`)
-                    );
-                  if (spell.name.toLowerCase() === name) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                } else {
-                  if (
-                    spell.name.toLowerCase() ===
-                    button.parentElement
-                      .querySelector("span")
-                      .innerText.toLowerCase()
-                  ) {
-                    return true;
-                  }
-                  return false;
-                }
-              });
-              if (filteredSpellstemp.length) {
-                acc[key] = filteredSpellstemp;
+                    .innerHTML.indexOf(`<dialog`)
+                );
+              if (spell.name.toLowerCase() === name) {
+                return true;
+              } else {
+                return false;
               }
-              return acc;
-            },
-            {}
-          );
-          let tempIndexOfCustomSpell = customSpells[
-            Object.keys(filteredSpelltemp)[0]
-          ].indexOf(filteredSpelltemp[Object.keys(filteredSpelltemp)[0]][0]);
-          if (tempIndexOfCustomSpell != -1) {
-            customSpells[Object.keys(filteredSpelltemp)[0]].splice(
-              tempIndexOfCustomSpell,
-              1
-            );
-            // filteredSpelltemp[Object.keys(filteredSpelltemp)[0]][0].time;
+            } else {
+              if (
+                spell.name.toLowerCase() ===
+                button.parentElement
+                  .querySelector("span")
+                  .innerText.toLowerCase()
+              ) {
+                return true;
+              }
+              return false;
+            }
+          });
+          if (filteredSpellstemp.length) {
+            acc[key] = filteredSpellstemp;
           }
+          return acc;
+        }, {});
+        let tempIndexOfCustomSpell = customSpells[
+          Object.keys(filteredSpelltemp)[0]
+        ].indexOf(filteredSpelltemp[Object.keys(filteredSpelltemp)[0]][0]);
+        if (tempIndexOfCustomSpell != -1) {
+          customSpells[Object.keys(filteredSpelltemp)[0]].splice(
+            tempIndexOfCustomSpell,
+            1
+          );
+          // filteredSpelltemp[Object.keys(filteredSpelltemp)[0]][0].time;
         }
+      }
 
-        e.target.parentElement.remove();
-      });
-    }
-  );
+      e.target.parentElement.remove();
+    });
+  });
 
-  [...document.getElementsByClassName("linkSpellButton")].forEach((button) => {
+  document.querySelectorAll(".linkSpellButton").forEach((button) => {
     button.addEventListener("click", (e) => linkSpell);
   });
 
-  [...document.getElementsByClassName("addCustomSpellButton")].forEach(
-    (button) => {
-      button.addEventListener("click", (e) => {
-        if (
-          getComputedStyle(document.getElementById("customSpellsCreator"))
-            .display == "none"
-        ) {
-          document.getElementById("customSpellsCreator").style.display =
-            "block";
-          document.getElementById("customSpellName").innerHTML =
-            "Имя: " + button.parentElement.querySelector(".spellName").value;
-          document.getElementById("customSpellLevelSelect").innerHTML =
-            button.parentElement.parentElement.parentElement.id.slice(-1);
+  document.querySelectorAll(".addCustomSpellButton").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      if (
+        getComputedStyle(document.getElementById("customSpellsCreator"))
+          .display == "none"
+      ) {
+        document.getElementById("customSpellsCreator").style.display = "block";
+        document.getElementById("customSpellName").innerHTML =
+          "Имя: " + button.parentElement.querySelector(".spellName").value;
+        document.getElementById("customSpellLevelSelect").innerHTML =
+          button.parentElement.parentElement.parentElement.id.slice(-1);
 
-          currentEditingCustomSpellUl =
-            button.parentElement.parentElement.parentElement;
-        }
-      });
-    }
-  );
+        currentEditingCustomSpellUl =
+          button.parentElement.parentElement.parentElement;
+      }
+    });
+  });
 }
 
 function linkSpell(button) {
