@@ -6,6 +6,9 @@ var Role;
 var urlParams;
 const PlayerId = socket.id;
 
+var isserverCreated = false;
+var isdataBaseGot = false;
+
 var PlayersList = [];
 
 var classes, races, racesDetails, spells;
@@ -19,15 +22,29 @@ async function createFetch(api, options) {
   });
 }
 
+socket.on("serverCreated", (data) => {
+  isserverCreated = true;
+  if (isdataBaseGot) {
+    document
+      .getElementById("loadingDiv")
+      .parentElement.removeChild(document.getElementById("loadingDiv"));
+    alert("Сервер создан!");
+  }
+});
+
 GetDataBase().then((data) => {
   classes = data[0];
   races = data[1];
   racesDetails = data[2];
   spells = data[3];
 
-  document
-    .getElementById("loadingDiv")
-    .parentElement.removeChild(document.getElementById("loadingDiv"));
+  isdataBaseGot = true;
+  if (isserverCreated) {
+    document
+      .getElementById("loadingDiv")
+      .parentElement.removeChild(document.getElementById("loadingDiv"));
+    alert("Сервер создан!");
+  }
 
   urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("code")) {
@@ -220,14 +237,13 @@ function remove_sheet(closeButton) {
 function sendEmail() {
   location.href =
     "mailto:dndonline.supp@gmail.com?subject=Ошибка в работе сайта";
-		alert("Вы будете перенаправлены на почту, спасибо за фидбэк!");
+  alert("Вы будете перенаправлены на почту, спасибо за фидбэк!");
 }
 
-
 document.getElementById("catCap").addEventListener("click", () => {
-	if (document.getElementById("catCap").checked) {
-		document.getElementById("cat").style.display = "block";
-	} else {
-		document.getElementById("cat").style.display = "none";
-	}
+  if (document.getElementById("catCap").checked) {
+    document.getElementById("cat").style.display = "block";
+  } else {
+    document.getElementById("cat").style.display = "none";
+  }
 });

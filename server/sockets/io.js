@@ -31,6 +31,7 @@ module.exports = (io) => {
           password: data.password,
           master: data.id,
         };
+        io.to(currentCode).emit("serverCreated", {});
         console.log(games);
         return;
       }
