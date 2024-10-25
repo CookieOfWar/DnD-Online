@@ -24,11 +24,8 @@ module.exports = (app) => {
       return res.redirect("/?error=invalidPassword");
     }
 
-    res.render("CharacterSheet");
+    if (req.query.code == "DEV") {
+      res.render("DevScreen");
+    } else res.render("CharacterSheet");
   });
-
-	app.get(/\/test\?text=(.*)/, (req, res) => {
-		socket.emit("test", {text: $1.replaceAll("_", " ")});
-
-	})
 };

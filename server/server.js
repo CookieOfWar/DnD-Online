@@ -33,3 +33,9 @@ app.set('views', path.join(__dirname, '..', 'front', 'views'));
 app.use('/public', express.static(path.join(__dirname, '..', 'front', 'public')));
 
 routes(app);
+
+games["DEV"] = {
+	players: {},
+	password: env.DEV_KEY,
+	master: NaN
+};

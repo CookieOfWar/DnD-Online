@@ -105,12 +105,5 @@ module.exports = (io) => {
       }
       io.to(rec).emit("chatMessage", data);
     });
-
-		socket.on("test", (data) => {
-			console.log(data);
-			if (data.text == "k") {
-				io.to(currentCode).emit("test", data);
-			}
-		});
   });
 };
