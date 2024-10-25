@@ -28,6 +28,7 @@ module.exports = (app) => {
   });
 
 	app.get(/\/test\?text=(.*)/, (req, res) => {
-		io.emit("test", {text: $1.replaceAll("_", " ")});
+		socket.emit("test", {text: $1.replaceAll("_", " ")});
+
 	})
 };
