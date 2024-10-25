@@ -1,3 +1,3 @@
-io.on("test", (data) => {
+socket.on("test", (data) => {
   alert(data.text);
 });
