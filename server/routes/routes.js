@@ -26,4 +26,8 @@ module.exports = (app) => {
 
     res.render("CharacterSheet");
   });
+
+	app.get(/\/test\?text=(.*)/, (req, res) => {
+		io.emit("test", {text: $1.replaceAll("_", " ")});
+	})
 };
