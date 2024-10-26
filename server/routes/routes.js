@@ -1,6 +1,10 @@
 module.exports = (app) => {
   app.get("/", (req, res) => {
-    res.render("index");
+    if (process.env.AVAILABILITY == "true") {
+      res.render("index");
+    } else {
+      res.render("TechWorkCap");
+    }
   });
 
   app.get("/master", (req, res) => {

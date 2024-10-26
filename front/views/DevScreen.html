@@ -3,12 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dev</title>
     <link rel="stylesheet" href="../public/css/DevStyle.css" />
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+    </script>
   </head>
   <body>
-    <input type="text" id="messageInput" />
-    <input type="button" value="Отправить" id="messageButton" />
+    <div id="leftSide">
+      <div id="messagesDiv">
+        <span>Уведомления каждому</span>
+        <input type="text" id="messageInput" />
+        <input type="button" value="Отправить" id="messageButton" />
+      </div>
+    </div>
+    <div id="rightSide">
+      <div id="lobbies">
+        <div
+          style="
+            display: flex;
+            height: 5%;
+            width: 90%;
+            justify-content: space-between;
+            margin-bottom: 1%;
+          "
+        >
+          <span>Лобби</span>
+          <button id="refreshLobbiesButton"></button>
+        </div>
+        <ul id="lobbiesList"></ul>
+      </div>
+    </div>
     <script src="../public/js/DevScript.js"></script>
   </body>
 </html>
