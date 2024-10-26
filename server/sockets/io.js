@@ -32,7 +32,7 @@ module.exports = (io) => {
           master: data.id,
         };
         io.to(currentCode).emit("serverCreated", {});
-        console.log(games);
+        console.log(Object.fromEntries(Object.entries(games).filter((k,v) => k!=="DEV")));
         return;
       }
 
@@ -41,7 +41,7 @@ module.exports = (io) => {
         name: data.name,
         class: data.class,
       };
-      console.log(games);
+      console.log(Object.fromEntries(Object.entries(games).filter((k,v) => k!=="DEV")));
       io.to(currentCode).emit("addPlayerToBM", games[currentCode]["players"]);
     });
 
@@ -51,7 +51,7 @@ module.exports = (io) => {
         if (!games[currentCode]) return;
         if (games[currentCode]["master"] == socket.id) {
           delete games[currentCode];
-          console.log(games);
+          console.log(Object.fromEntries(Object.entries(games).filter((k,v) => k!=="DEV")));
           return;
         } else if (
           Object.keys(games[currentCode]["players"]).indexOf(socket.id) != -1
@@ -62,7 +62,7 @@ module.exports = (io) => {
             games[currentCode]["players"]
           );
         } else console.error("Undefined player disconnected");
-        console.log(games);
+        console.log(Object.fromEntries(Object.entries(games).filter((k,v) => k!=="DEV")));
       }
     });
 
