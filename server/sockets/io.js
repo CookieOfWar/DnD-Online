@@ -90,6 +90,7 @@ module.exports = (io) => {
     });
 
     socket.on("updMap", () => {
+      if (!games[currentCode]) return;
       io.to(currentCode).emit("addPlayerToBM", games[currentCode]["players"]);
 
       if (games[currentCode]["map"])
@@ -109,6 +110,7 @@ module.exports = (io) => {
     });
 
     socket.on("chatMessage", (data) => {
+      if (!games[currentCode]) return;
       if (data.receiver == -1) {
         io.to(currentCode).emit("chatMessage", data);
         return;

@@ -86,7 +86,8 @@ socket.on("getPlayersList", (data) => {
   PlayersList = [];
   let keys = Object.keys(data);
   for (let i = 0; i < keys.length; i++) {
-    PlayersList.push([data[keys[i]].name, data[keys[i]].id]);
+    if (data[keys[i]].name != "Master")
+      PlayersList.push([data[keys[i]].name, data[keys[i]].id]);
   }
 
   console.log(PlayersList);
